@@ -1,5 +1,7 @@
 package main.br.andre.model;
 
+import main.br.andre.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,22 @@ public class Field {
     Field(int row, int column) {
         this.row = row;
         this.column = column;
+    }
+
+    public boolean isMined() {
+        return isMined;
+    }
+
+    public boolean isOpened() {
+        return isOpened;
+    }
+
+    public boolean isMarked() {
+        return isMarked;
+    }
+
+    void setMined() {
+        isMined = true;
     }
 
     boolean addNeighbor(Field neighbor) {
@@ -37,5 +55,34 @@ public class Field {
         } else {
             return false;
         }
+    }
+
+    void alterMarked() {
+        if(!isOpened) {
+            isMarked = !isMarked;
+        }
+    }
+
+    boolean open() {
+        if(!isOpened && !isMarked) {
+            isOpened = true;
+
+            if(isMined) {
+                throw new ExplosionException();
+            }
+
+            if(safeNeighbor()) {
+                neighbors.forEach(Field::open);
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean safeNeighbor() {
+        return neighbors.stream()
+                .noneMatch(n -> n.isMined);
     }
 }
