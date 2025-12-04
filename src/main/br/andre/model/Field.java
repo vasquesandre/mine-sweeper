@@ -115,7 +115,7 @@ public class Field {
     public String toString() {
         if(marked) {
             return "x";
-        } else if (opened && mined) {
+        } else if(opened && mined) {
             return "*";
         } else if(opened && minesInTheNeighborhood() > 0) {
             return Long.toString(minesInTheNeighborhood());
