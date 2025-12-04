@@ -111,4 +111,36 @@ class FieldTest {
 
         assertTrue(n3.isOpened() && !n1.isOpened());
     }
+
+    @Test
+    void testReset() {
+        field.setMined();
+        field.reset();
+        assertFalse(field.isMined());
+        assertFalse(field.isMarked());
+        assertFalse(field.isOpened());
+    }
+
+    @Test
+    void testTargetReachedFirstCondition() {
+        field.open();
+        assertTrue(field.targetReached());
+    }
+
+    @Test
+    void testTargetReachedSecondCondition() {
+        field.setMined();
+        field.alterMarked();
+        assertTrue(field.targetReached());
+    }
+
+    @Test
+    void testGetRow() {
+        assertEquals(3, field.getRow());
+    }
+
+    @Test
+    void testGetColumn() {
+        assertEquals(3, field.getColumn());
+    }
 }

@@ -10,9 +10,9 @@ public class Field {
     private final int row;
     private final int column;
 
-    private boolean isMined;
-    private boolean isOpened;
-    private boolean isMarked;
+    private boolean mined;
+    private boolean opened;
+    private boolean marked;
 
     private List<Field> neighbors = new ArrayList<>();
 
@@ -22,19 +22,44 @@ public class Field {
     }
 
     public boolean isMined() {
-        return isMined;
+        return mined;
     }
 
     public boolean isOpened() {
-        return isOpened;
+        return opened;
     }
 
     public boolean isMarked() {
-        return isMarked;
+        return marked;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 
     void setMined() {
-        isMined = true;
+        mined = true;
+    }
+
+    boolean targetReached() {
+        boolean revealedAndSafe = !mined && opened;
+        boolean hiddenAndMarked = mined && marked;
+
+        return revealedAndSafe || hiddenAndMarked;
+    }
+
+    long minesInTheNeighborhood() {
+        return neighbors.stream().filter(Field::isMined).count();
+    }
+
+    void reset() {
+        opened = false;
+        marked = false;
+        mined = false;
     }
 
     boolean addNeighbor(Field neighbor) {
@@ -58,16 +83,16 @@ public class Field {
     }
 
     void alterMarked() {
-        if(!isOpened) {
-            isMarked = !isMarked;
+        if(!opened) {
+            marked = !marked;
         }
     }
 
     boolean open() {
-        if(!isOpened && !isMarked) {
-            isOpened = true;
+        if(!opened && !marked) {
+            opened = true;
 
-            if(isMined) {
+            if(mined) {
                 throw new ExplosionException();
             }
 
@@ -83,6 +108,21 @@ public class Field {
 
     boolean safeNeighbor() {
         return neighbors.stream()
-                .noneMatch(n -> n.isMined);
+                .noneMatch(n -> n.mined);
+    }
+
+    @Override
+    public String toString() {
+        if(marked) {
+            return "x";
+        } else if (opened && mined) {
+            return "*";
+        } else if(opened && minesInTheNeighborhood() > 0) {
+            return Long.toString(minesInTheNeighborhood());
+        } else if(opened) {
+            return " ";
+        } else {
+            return "?";
+        }
     }
 }
