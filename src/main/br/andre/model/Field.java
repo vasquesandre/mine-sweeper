@@ -33,6 +33,10 @@ public class Field {
         return marked;
     }
 
+    void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
     public int getRow() {
         return row;
     }
