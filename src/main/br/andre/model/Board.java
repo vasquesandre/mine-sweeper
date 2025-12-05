@@ -8,9 +8,9 @@ import java.util.function.Predicate;
 
 public class Board {
 
-    private int rows;
-    private int columns;
-    private int mines;
+    private final int rows;
+    private final int columns;
+    private final int mines;
 
     private final List<Field> fields = new ArrayList<>();
 
@@ -22,6 +22,17 @@ public class Board {
         generateFields();
         associateNeighbors();
         sortMines();
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public Field getField(int row, int col) {
+        return fields.stream()
+                .filter(f -> f.getRow() == row && f.getColumn() == col)
+                .findFirst()
+                .orElseThrow();
     }
 
     public void open(int row, int column) {
@@ -60,7 +71,9 @@ public class Board {
     }
 
     private void sortMines() {
-        long fieldsMined = 0;
+        if (mines <= 0) return;
+
+        long fieldsMined;
         Predicate<Field> mined = Field::isMined;
 
         do {
