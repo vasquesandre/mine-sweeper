@@ -48,3 +48,7 @@ On each turn:
 This project helped reinforce core Java concepts such as loops, conditionals, arrays, and overall problem-solving, making it a great hands-on learning experience.
 
 ---
+
+## Demo
+
+![Demo](Untitled.mov)
