@@ -39,7 +39,7 @@ On each turn:
 - X → Unopened and marked field  
 - Numbers → Opened field with adjacent mines  
 - Empty space → Opened field with no adjacent mines  
-- * → Mines revealed when the game is lost  
+- '*' → Mines revealed when the game is lost  
 
 ---
 
